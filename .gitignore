@@ -1,2 +1,3 @@
 /api_example/api_example/my_settings.py
 /.idea
+/api_example/db.sqlite3
