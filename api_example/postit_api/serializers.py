@@ -16,7 +16,8 @@ class CommentSerializer(serializers.ModelSerializer):
 class PostSerializer(serializers.ModelSerializer):
     user_id = serializers.ReadOnlyField(source='user.id')
     user = serializers.ReadOnlyField(source='user.username')
-    comments = CommentSerializer(many=True)
+    # comments = CommentSerializer(many=True)
+    comments = serializers.StringRelatedField(many=True)
 
     class Meta:
         model = Post
