@@ -55,5 +55,6 @@ class PostCommentList(generics.ListCreateAPIView):
         return Comment.objects.filter(post=post)
 
     def perform_create(self, serializer):
-        serializer.save(user=self.request.user)
+        post = Post.objects.get(pk=self.kwargs['pk'])
+        serializer.save(user=self.request.user, post=post)
 
