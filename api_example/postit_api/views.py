@@ -5,7 +5,7 @@ from .models import (Post,
                      PostLike,
                      CommentLike)
 
-from .serializers import PostSerializer
+from .serializers import PostSerializer, CommentSerializer
 from rest_framework.exceptions import ValidationError
 
 
@@ -38,5 +38,11 @@ class PostDetail(generics.RetrieveUpdateDestroyAPIView):
             raise ValidationError('Negalima redaguoti svetimų pranešimų!')
 
 
+class CommentList(generics.ListCreateAPIView):
+    queryset = Comment.objects.all()
+    serializer_class = CommentSerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
 
