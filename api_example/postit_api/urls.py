@@ -17,10 +17,12 @@ from django.contrib import admin
 from django.urls import path, include
 from .views import (PostList,
                     PostDetail,
-                    CommentList)
+                    CommentList,
+                    PostCommentList)
 
 urlpatterns = [
     path('posts', PostList.as_view()),
     path('posts/<int:pk>', PostDetail.as_view()),
     path('comments', CommentList.as_view()),
+    path('posts/<int:pk>/comments', PostCommentList.as_view()),
 ]
