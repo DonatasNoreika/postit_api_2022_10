@@ -54,14 +54,14 @@ class CommentDetail(generics.RetrieveUpdateDestroyAPIView):
     def delete(self, request, *args, **kwargs):
         comment = Comment.objects.filter(pk=kwargs['pk'], user=self.request.user)
         if comment.exists():
-            return self.destroy(request, *args, **kwargs)
+            return super().delete(request, *args, **kwargs)
         else:
             raise ValidationError('Negalima trinti svetimų komentarų!')
 
     def put(self, request, *args, **kwargs):
         comment = Comment.objects.filter(pk=kwargs['pk'], user=self.request.user)
         if comment.exists():
-            return self.update(request, *args, **kwargs)
+            return super().put(request, *args, **kwargs)
         else:
             raise ValidationError('Negalima koreguoti svetimų komentarų!')
 
