@@ -46,6 +46,25 @@ class CommentList(generics.ListCreateAPIView):
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
 
+class CommentDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Comment.objects.all()
+    serializer_class = CommentSerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+
+    def delete(self, request, *args, **kwargs):
+        comment = Comment.objects.filter(pk=kwargs['pk'], user=self.request.user)
+        if comment.exists():
+            return self.destroy(request, *args, **kwargs)
+        else:
+            raise ValidationError('Negalima trinti svetimų komentarų!')
+
+    def put(self, request, *args, **kwargs):
+        comment = Comment.objects.filter(pk=kwargs['pk'], user=self.request.user)
+        if comment.exists():
+            return self.update(request, *args, **kwargs)
+        else:
+            raise ValidationError('Negalima koreguoti svetimų komentarų!')
+
 class PostCommentList(generics.ListCreateAPIView):
     serializer_class = CommentSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
