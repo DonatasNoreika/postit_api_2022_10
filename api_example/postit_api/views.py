@@ -5,7 +5,7 @@ from .models import (Post,
                      PostLike,
                      CommentLike)
 
-from .serializers import PostSerializer, CommentSerializer
+from .serializers import PostSerializer, CommentSerializer, PostLikeSerializer
 from rest_framework.exceptions import ValidationError
 
 
@@ -76,4 +76,19 @@ class PostCommentList(generics.ListCreateAPIView):
     def perform_create(self, serializer):
         post = Post.objects.get(pk=self.kwargs['pk'])
         serializer.save(user=self.request.user, post=post)
+
+class PostLikeCreate(generics.CreateAPIView):
+    serializer_class = PostLikeSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_queryset(self):
+        user = self.request.user
+        post = Post.objects.get(pk=self.kwargs['pk'])
+        return PostLike.objects.filter(post=post, user=user)
+
+    def perform_create(self, serializer):
+        user = self.request.user
+        post = Post.objects.get(pk=self.kwargs['pk'])
+        serializer.save(post=post, user=user)
+        super().perform_create(serializer)
 
