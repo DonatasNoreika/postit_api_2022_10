@@ -20,7 +20,8 @@ from .views import (PostList,
                     CommentList,
                     PostCommentList,
                     CommentDetail,
-                    PostLikeCreate)
+                    PostLikeCreate,
+                    UserCreate)
 
 urlpatterns = [
     path('posts', PostList.as_view()),
@@ -29,4 +30,5 @@ urlpatterns = [
     path('comments', CommentList.as_view()),
     path('comments/<int:pk>', CommentDetail.as_view()),
     path('posts/<int:pk>/comments', PostCommentList.as_view()),
+    path('signup', UserCreate.as_view())
 ]

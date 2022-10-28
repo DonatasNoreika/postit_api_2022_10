@@ -6,9 +6,12 @@ from .models import (Post,
                      PostLike,
                      CommentLike)
 
-from .serializers import PostSerializer, CommentSerializer, PostLikeSerializer
+from .serializers import (PostSerializer,
+                          CommentSerializer,
+                          PostLikeSerializer,
+                          UserSerializer)
 from rest_framework.exceptions import ValidationError
-
+from django.contrib.auth.models import User
 
 # Create your views here.
 class PostList(generics.ListCreateAPIView):
@@ -103,3 +106,7 @@ class PostLikeCreate(generics.CreateAPIView, mixins.DestroyModelMixin):
             raise ValidationError('Jūs nepalikote patiktuko po šiuo pranešimu!')
 
 
+class UserCreate(generics.CreateAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+    permission_classes = (permissions.AllowAny,)
