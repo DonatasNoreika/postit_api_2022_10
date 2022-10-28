@@ -87,6 +87,8 @@ class PostLikeCreate(generics.CreateAPIView):
         return PostLike.objects.filter(post=post, user=user)
 
     def perform_create(self, serializer):
+        if self.get_queryset().exists():
+            raise ValidationError('Jūs jau palikote patiktuką šiam pranešimui!')
         user = self.request.user
         post = Post.objects.get(pk=self.kwargs['pk'])
         serializer.save(post=post, user=user)
